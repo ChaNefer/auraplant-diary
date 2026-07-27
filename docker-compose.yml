@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: monodiary-postgres
+    restart: unless-stopped
+    ports:
+      # 5432/5433 often taken locally (host Postgres / ZeroCITY)
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: monodiary
+      POSTGRES_PASSWORD: monodiary
+      POSTGRES_DB: monodiary
+    volumes:
+      - monodiary_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monodiary -d monodiary"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  monodiary_pgdata:

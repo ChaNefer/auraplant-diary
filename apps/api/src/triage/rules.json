@@ -1,0 +1,12 @@
+[
+  {
+    "id": "humidity-low",
+    "when": {
+      "type": "measurement.humidity",
+      "payload_path": "value",
+      "op": "lt",
+      "value": 20
+    },
+    "add_flags": ["alert"]
+  }
+]
