@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "@monodiary/ui-shared/styles/timeline.css";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --color-ink: #1c1917;
+  --color-paper: #f5f0e8;
+  --color-moss: #3f6212;
+  --color-clay: #9a3412;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -10%, #d9e4c5 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 0%, #f0d9c8 0%, transparent 50%),
+    var(--color-paper);
+}

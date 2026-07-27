@@ -2,7 +2,8 @@
 
 Universal **Timeline Core** — domain-agnostic diary engine for AuraPlant, SolutionRE.RUN, ZeroCITY, insurance diaries, and future packs.
 
-Phase 1 (this repo state): **PostgreSQL schema + Event API only**. No UI. No legacy imports.
+Phase 1: PostgreSQL + Event API.  
+Phase 2: Eyris-based `packages/ui-shared` Timeline + `apps/diary-web` wired to the live API.
 
 ## Model law
 
@@ -18,7 +19,9 @@ Transfer moves the Entity to another Workspace and writes `entity_workspace_move
 
 - pnpm + Turborepo monorepo
 - `packages/timeline-core` — Zod contracts
+- `packages/ui-shared` — Eyris Timeline primitive + `DiaryTimeline`
 - `apps/api` — Hono + Drizzle + PostgreSQL 16
+- `apps/diary-web` — Vite + React + Tailwind demo UI
 
 ## Quick start
 
@@ -35,11 +38,13 @@ pnpm db:up
 pnpm db:migrate
 pnpm db:seed
 
-# 4) API
-pnpm --filter @monodiary/api dev
+# 4) API + UI (two terminals)
+pnpm dev:api
+pnpm dev:web
 ```
 
-Health: `GET http://127.0.0.1:3000/health`
+- API health: `GET http://127.0.0.1:3000/health`
+- UI: `http://127.0.0.1:5174` (proxies `/api` → `:3000`)
 
 ### Smoke test
 
@@ -49,7 +54,7 @@ With API running:
 pnpm smoke
 ```
 
-## API (Phase 1)
+## API (Phase 1+)
 
 | Method | Path | Notes |
 | --- | --- | --- |
@@ -59,6 +64,7 @@ pnpm smoke
 | `GET` | `/workspaces/:id` | detail |
 | `GET` | `/workspaces/:id/children` | direct children |
 | `GET` | `/workspaces/:id/breadcrumbs` | path to root |
+| `GET` | `/entities` | list entities |
 | `POST` | `/entities` | create in workspace |
 | `GET` | `/entities/:id` | detail |
 | `POST` | `/entities/:id/transfer` | `{ to_workspace_id, reason? }` |
@@ -67,10 +73,16 @@ pnpm smoke
 
 Events are never updated or deleted via API. Corrections = new `system.correction` / `system.void` events (convention in `@monodiary/timeline-core`).
 
-## Out of scope (Phase 1)
+## UI (Phase 2)
 
-- UI / `ui-shared` / Eyris
-- Domain apps (`auraplant`, `zero-city`, …)
+- Timeline primitive adapted from Eyris Vite TS demo (`components/ui/Timeline`)
+- Activity-style day grouping via `DiaryTimeline`
+- Domain copy via dictionary (demo uses AuraPlant-ish humidity labels)
+- Full Eyris admin shell / FAB / auth still out of scope
+
+## Out of scope (still)
+
+- Full domain apps (`auraplant`, `zero-city`, …) as separate products
 - Auth, E2E crypto, webhooks, media upload endpoints
 - Any code from SignalistA / ZeroCITY / other legacy repos
 

@@ -1,0 +1,42 @@
+/* Adapted from Eyris Vite TypeScript demo `_timeline.css` */
+@layer components {
+  .timeline {
+    @apply flex flex-col items-start;
+  }
+
+  .timeline-item {
+    @apply flex min-h-[50px];
+  }
+
+  .timeline-item-last {
+    @apply min-h-max;
+  }
+
+  .timeline-item-media {
+    @apply flex flex-col items-center;
+  }
+
+  .timeline-item-media-content {
+    @apply my-0.5;
+  }
+
+  .timeline-item-media-default {
+    @apply h-4 w-4 rounded-full border-[3px] border-gray-300 dark:border-gray-600;
+  }
+
+  .timeline-item-wrapper {
+    @apply flex flex-auto;
+  }
+
+  .timeline-item-content {
+    @apply ml-3 w-full pt-0.5 pb-6 rtl:mr-3;
+  }
+
+  .timeline-item-content-last {
+    @apply pb-0;
+  }
+
+  .timeline-connect {
+    @apply h-full w-[2px] flex-grow bg-gray-200 dark:bg-gray-600;
+  }
+}

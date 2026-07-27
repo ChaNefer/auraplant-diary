@@ -11,6 +11,13 @@ import { badRequest, notFound, zodError } from "../lib/errors.js";
 
 export const entitiesRoutes = new Hono();
 
+entitiesRoutes.get("/", async (c) => {
+  const rows = await db.query.entity.findMany({
+    orderBy: [asc(entity.createdAt)],
+  });
+  return c.json(rows.map(serializeEntity));
+});
+
 entitiesRoutes.post("/", async (c) => {
   const parsed = CreateEntitySchema.safeParse(await c.req.json());
   if (!parsed.success) return zodError(c, parsed.error);

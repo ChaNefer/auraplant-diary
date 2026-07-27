@@ -10,8 +10,11 @@
     "db:down": "docker compose down",
     "db:migrate": "pnpm --filter @monodiary/api db:migrate",
     "db:seed": "pnpm --filter @monodiary/api db:seed",
-    "smoke": "pnpm --filter @monodiary/api smoke"
+    "smoke": "pnpm --filter @monodiary/api smoke",
+    "dev:api": "pnpm --filter @monodiary/api dev",
+    "dev:web": "pnpm --filter @monodiary/diary-web dev"
   },
+
   "devDependencies": {
     "turbo": "^2.3.3",
     "typescript": "^5.7.2"
