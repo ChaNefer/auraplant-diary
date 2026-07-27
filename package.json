@@ -12,8 +12,10 @@
     "db:seed": "pnpm --filter @monodiary/api db:seed",
     "smoke": "pnpm --filter @monodiary/api smoke",
     "dev:api": "pnpm --filter @monodiary/api dev",
-    "dev:web": "pnpm --filter @monodiary/diary-web dev"
+    "dev:web": "pnpm --filter @monodiary/diary-web dev",
+    "dev:insurance": "pnpm --filter @monodiary/insurance-diary dev"
   },
+
 
   "devDependencies": {
     "turbo": "^2.3.3",

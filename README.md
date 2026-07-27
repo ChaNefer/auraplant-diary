@@ -3,7 +3,8 @@
 Universal **Timeline Core** — domain-agnostic diary engine for AuraPlant, SolutionRE.RUN, ZeroCITY, insurance diaries, and future packs.
 
 Phase 1: PostgreSQL + Event API.  
-Phase 2: Eyris-based `packages/ui-shared` Timeline + `apps/diary-web` wired to the live API.
+Phase 2: Eyris-based `packages/ui-shared` Timeline + `apps/diary-web` wired to the live API.  
+Phase 2b: **Klikalny mockup** Pamiętnika Ubezpieczeniowego — `apps/insurance-diary` (pełny Eyris starter, bez API).
 
 ## Model law
 
@@ -22,6 +23,7 @@ Transfer moves the Entity to another Workspace and writes `entity_workspace_move
 - `packages/ui-shared` — Eyris Timeline primitive + `DiaryTimeline`
 - `apps/api` — Hono + Drizzle + PostgreSQL 16
 - `apps/diary-web` — Vite + React + Tailwind demo UI
+- `apps/insurance-diary` — Eyris 1:1 clickable mockup (PL, worker beta)
 
 ## Quick start
 
@@ -45,6 +47,17 @@ pnpm dev:web
 
 - API health: `GET http://127.0.0.1:3000/health`
 - UI: `http://127.0.0.1:5174` (proxies `/api` → `:3000`)
+
+### Insurance diary mockup (no API)
+
+```bash
+pnpm install
+pnpm dev:insurance
+```
+
+Open `http://127.0.0.1:5177`
+
+Flow: telefon → OTP **`1234`** → wybór firmy → start zmiany → czerwony FAB → triage → zapisz dowód → timeline → profil.
 
 ### Smoke test
 
