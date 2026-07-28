@@ -57,14 +57,14 @@ const ReportEvidence = () => {
     }
 
     const save = () => {
-        commitIncident()
+        const id = commitIncident()
         toast.push(
             <Notification title="Dowód zapisany" type="success">
-                Zdarzenie trafiło na nienaruszalną oś czasu (mock lokalny).
+                Zdarzenie na osi czasu. Możesz skonsultować je z prawnikiem.
             </Notification>,
             { placement: 'top-center' },
         )
-        navigate('/work', { replace: true })
+        navigate(id ? `/work` : '/work', { replace: true })
     }
 
     return (

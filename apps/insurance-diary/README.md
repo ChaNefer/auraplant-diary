@@ -1,25 +1,37 @@
-# Pamiętnik Ubezpieczeniowy — klikalny mockup
+# Pamiętnik Ubezpieczeniowy — klikalny mockup (deep flow)
 
-Pełna kopia **Eyris Vite TypeScript starter** + ekrany PL dla bety worker UX.
+Pełny **Eyris Vite TS starter** + mięsisty flow dla demo ze wspólniczkami (compliance / prawo).
+
+Frontend-only. ZK i płatności są **symulowane**.
 
 ## Start
 
 ```bash
-# z root monorepo
 pnpm install
 pnpm dev:insurance
 ```
 
 URL: http://127.0.0.1:5177
 
-## Ścieżka demo
+Jeśli stary stan w przeglądarce przeszkadza: wyczyść `localStorage` klucz `insurance-diary-mock-v2`.
 
-1. Telefon → **Wyślij kod**
-2. OTP: **`1234`**
-3. Wyszukaj firmę (min. 3 znaki), np. `Jan` → wybierz **Janusz Sp. z o.o.**
-4. **Rozpocznij pracę** → zielony kafelek na osi
-5. Czerwony FAB → triage → zdjęcie/głos (mock) → **Zapisz dowód**
-6. **Zakończ zmianę** → szary kafelek
-7. Hamburger → profil / lead prawny / polisy
+## Ścieżka demo (dla wspólniczek)
 
-Stan w `localStorage` (`insurance-diary-mock`). Bez API / SMS / KRS.
+1. Telefon → OTP **`1234`**
+2. **Dane formalne** (jawne do polisy) + komunikat zaufania
+3. **Zakup B2C** — 30/90 dni, BLIK lub Apple Pay (mock), karencja od jutra
+4. **Skarbiec** — PIN 6 cyfr (lub seed + PIN) + checkbox utraty klucza
+5. Dashboard: pasek **niebieski**, selektor **2–3 firm**
+6. **Rozpocznij pracę** → modal BHP (4 plansze) → wpis na osi → pasek **zielony** + zegar
+7. Czerwony FAB → wypadek → zdjęcie/głos → **Zapisz dowód**
+8. Pod czerwonym wpisem: **Skonsultuj z prawnikiem** → zaznacz dowody → PIN → toast **Żylet**
+9. Profil: dane jawne vs „Pamiętnik chroniony PIN-em”; opcjonalnie „Symuluj 14h zmiany”
+
+## Co udowadnia prototyp
+
+| Temat | Jak widać w UI |
+|---|---|
+| Polisa vs ZK | Dane formalne jawne; Pamiętnik za PIN-em |
+| Compliance BHP | Bloker check-inu + twardy wpis na osi |
+| Lead gen Prawa Ręka | CTA kontekstowe + explicit consent + PIN |
+| Model biznesowy | B2C zakup + kwalifikowana paczka dowodów |

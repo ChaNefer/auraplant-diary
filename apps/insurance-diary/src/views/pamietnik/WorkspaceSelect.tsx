@@ -10,7 +10,7 @@ import { useInsuranceMockStore } from '@/store/insuranceMockStore'
 const WorkspaceSelect = () => {
     const navigate = useNavigate()
     const customAgencies = useInsuranceMockStore((s) => s.customAgencies)
-    const setWorkspace = useInsuranceMockStore((s) => s.setWorkspace)
+    const selectWorkplace = useInsuranceMockStore((s) => s.selectWorkplace)
     const addCustomAgency = useInsuranceMockStore((s) => s.addCustomAgency)
     const [query, setQuery] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -23,7 +23,7 @@ const WorkspaceSelect = () => {
     )
 
     const pick = (id: string, name: string, city: string, temporary?: boolean) => {
-        setWorkspace({ id, name, city, temporary })
+        selectWorkplace({ id, name, city, temporary })
         navigate('/work', { replace: true })
     }
 

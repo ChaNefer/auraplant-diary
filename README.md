@@ -57,7 +57,8 @@ pnpm dev:insurance
 
 Open `http://127.0.0.1:5177`
 
-Flow: telefon → OTP **`1234`** → wybór firmy → start zmiany → czerwony FAB → triage → zapisz dowód → timeline → profil.
+Flow (deep): OTP **`1234`** → dane polisy → BLIK mock → PIN → dashboard + BHP gate → FAB → CTA prawnik → Żylet.  
+Szczegóły: [`apps/insurance-diary/README.md`](apps/insurance-diary/README.md).
 
 ### Smoke test
 

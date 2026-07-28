@@ -11,7 +11,7 @@ const OtpVerification = () => {
     const navigate = useNavigate()
     const pendingPhone = useInsuranceMockStore((s) => s.pendingPhone)
     const setUserPhone = useInsuranceMockStore((s) => s.setUserPhone)
-    const workspace = useInsuranceMockStore((s) => s.workspace)
+    const onboardingDone = useInsuranceMockStore((s) => s.onboardingDone)
     const setSessionSignedIn = useSessionUser((s) => s.setSessionSignedIn)
     const setUser = useSessionUser((s) => s.setUser)
     const { setToken } = useToken()
@@ -37,7 +37,9 @@ const OtpVerification = () => {
             avatar: '',
         })
         setLoading(false)
-        navigate(workspace ? '/work' : '/workspace', { replace: true })
+        navigate(onboardingDone ? '/work' : '/onboarding/formal', {
+            replace: true,
+        })
     }
 
     return (
