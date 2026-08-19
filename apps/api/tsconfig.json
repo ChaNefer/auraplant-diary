@@ -3,11 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "types": ["node"],
-    "baseUrl": ".",
-    "paths": {
-      "@monodiary/timeline-core": ["../../packages/timeline-core/src/index.ts"]
-    }
+    "types": ["node"]
   },
   "include": ["src/**/*"],
   "exclude": ["src/db/seed.ts"]
