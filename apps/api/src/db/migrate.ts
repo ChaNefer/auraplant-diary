@@ -17,6 +17,13 @@ if (!databaseUrl) {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const migrationsFolder = path.join(__dirname, "../../drizzle");
 
+function needsPgSsl(url: string) {
+  return (
+    process.env.NODE_ENV === "production" ||
+    /render\.com|sslmode=require/i.test(url)
+  );
+}
+
 const usePglite =
   databaseUrl === "pglite" || databaseUrl.startsWith("pglite:");
 
@@ -32,7 +39,10 @@ if (usePglite) {
   console.log("Migrations applied (PGlite).");
   await client.close();
 } else {
-  const connection = postgres(databaseUrl, { max: 1 });
+  const connection = postgres(databaseUrl, {
+    max: 1,
+    ssl: needsPgSsl(databaseUrl) ? { rejectUnauthorized: false } : undefined,
+  });
   const db = drizzle(connection);
   await migrate(db, { migrationsFolder });
   console.log("Migrations applied.");

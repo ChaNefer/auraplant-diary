@@ -11,6 +11,13 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required");
 }
 
+function needsPgSsl(url: string) {
+  return (
+    process.env.NODE_ENV === "production" ||
+    /render\.com|sslmode=require/i.test(url)
+  );
+}
+
 const usePglite =
   databaseUrl === "pglite" || databaseUrl.startsWith("pglite:");
 
@@ -34,7 +41,10 @@ if (usePglite) {
   sql = { end: async () => undefined };
   console.log(`DB ready (PGlite): ${dir}`);
 } else {
-  const connection = postgres(databaseUrl, { max: 10 });
+  const connection = postgres(databaseUrl, {
+    max: 10,
+    ssl: needsPgSsl(databaseUrl) ? { rejectUnauthorized: false } : undefined,
+  });
   db = drizzlePg(connection, { schema });
   sql = connection;
 }
