@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: auraplant-diary
+    runtime: node
+    plan: starter
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @monodiary/timeline-core build && pnpm --filter @monodiary/api build
+    startCommand: pnpm start:prod
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST
+        value: "0.0.0.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: auraplant-diary-db
+          property: connectionString
+
+databases:
+  - name: auraplant-diary-db
+    plan: starter

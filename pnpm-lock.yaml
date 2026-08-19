@@ -17,6 +17,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.3.4
+        version: 0.3.16
       '@hono/node-server':
         specifier: ^1.13.7
         version: 1.19.17(hono@4.12.32)
@@ -28,7 +31,7 @@ importers:
         version: 16.6.1
       drizzle-orm:
         specifier: ^0.38.3
-        version: 0.38.4(@types/react@19.2.17)(postgres@3.4.9)(react@19.2.8)
+        version: 0.38.4(@electric-sql/pglite@0.3.16)(@types/react@19.2.17)(postgres@3.4.9)(react@19.2.8)
       hono:
         specifier: ^4.6.14
         version: 4.12.32
@@ -54,30 +57,15 @@ importers:
 
   apps/diary-web:
     dependencies:
-      '@floating-ui/react':
-        specifier: ^0.27.16
-        version: 0.27.20(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@monodiary/ui-shared':
         specifier: workspace:*
         version: link:../../packages/ui-shared
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.21
       react:
         specifier: ^19.0.0
         version: 19.2.8
       react-dom:
         specifier: ^19.0.0
         version: 19.2.8(react@19.2.8)
-      react-icons:
-        specifier: ^5.5.0
-        version: 5.7.0(react@19.2.8)
-      tailwind-merge:
-        specifier: ^3.4.0
-        version: 3.6.0
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.1.18
@@ -445,6 +433,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.3.16':
+    resolution: {integrity: sha512-mZkZfOd9OqTMHsK+1cje8OSzfAQcpD7JmILXTl5ahdempjUDdmg4euf1biDex5/LfQIDJ3gvCu6qDgdnDxfJmA==}
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -3867,6 +3858,8 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@electric-sql/pglite@0.3.16': {}
+
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
       esbuild: 0.18.20
@@ -5453,8 +5446,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.38.4(@types/react@19.2.17)(postgres@3.4.9)(react@19.2.8):
+  drizzle-orm@0.38.4(@electric-sql/pglite@0.3.16)(@types/react@19.2.17)(postgres@3.4.9)(react@19.2.8):
     optionalDependencies:
+      '@electric-sql/pglite': 0.3.16
       '@types/react': 19.2.17
       postgres: 3.4.9
       react: 19.2.8

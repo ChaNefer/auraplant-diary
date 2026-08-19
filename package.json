@@ -11,6 +11,7 @@
     "db:migrate": "pnpm --filter @monodiary/api db:migrate",
     "db:seed": "pnpm --filter @monodiary/api db:seed",
     "smoke": "pnpm --filter @monodiary/api smoke",
+    "start:prod": "pnpm --filter @monodiary/api start:prod",
     "dev:api": "pnpm --filter @monodiary/api dev",
     "dev:web": "pnpm --filter @monodiary/diary-web dev",
     "dev:insurance": "pnpm --filter @monodiary/insurance-diary dev"

@@ -17,6 +17,7 @@ export const workspace = pgTable(
     slug: text("slug").notNull(),
     name: text("name").notNull(),
     kind: text("kind").notNull().default("place"),
+    ownerId: text("owner_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -24,6 +25,7 @@ export const workspace = pgTable(
   (t) => [
     uniqueIndex("workspace_slug_uidx").on(t.slug),
     index("workspace_parent_idx").on(t.parentId),
+    index("workspace_owner_idx").on(t.ownerId),
   ],
 );
 

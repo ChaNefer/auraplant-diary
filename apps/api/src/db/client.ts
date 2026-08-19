@@ -1,5 +1,8 @@
+import { mkdirSync } from "node:fs";
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { PGlite } from "@electric-sql/pglite";
+import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
+import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema.js";
 
@@ -8,5 +11,33 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required");
 }
 
-export const sql = postgres(databaseUrl, { max: 10 });
-export const db = drizzle(sql, { schema });
+const usePglite =
+  databaseUrl === "pglite" || databaseUrl.startsWith("pglite:");
+
+type AppDb =
+  | ReturnType<typeof drizzlePglite>
+  | ReturnType<typeof drizzlePg>;
+
+function pglitePath() {
+  if (databaseUrl === "pglite") return "./.data/monodiary";
+  return databaseUrl.slice("pglite:".length) || "./.data/monodiary";
+}
+
+let db: AppDb;
+let sql: postgres.Sql | { end: () => Promise<void> };
+
+if (usePglite) {
+  const dir = pglitePath();
+  mkdirSync(dir, { recursive: true });
+  const client = new PGlite(dir);
+  db = drizzlePglite({ client, schema });
+  sql = { end: async () => undefined };
+  console.log(`DB ready (PGlite): ${dir}`);
+} else {
+  const connection = postgres(databaseUrl, { max: 10 });
+  db = drizzlePg(connection, { schema });
+  sql = connection;
+}
+
+export { db, sql };
+export const usingPglite = usePglite;

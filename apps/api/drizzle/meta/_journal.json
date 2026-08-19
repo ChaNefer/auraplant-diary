@@ -8,6 +8,13 @@
       "when": 1785183625690,
       "tag": "0000_youthful_boomerang",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787049800000,
+      "tag": "0001_workspace_owner",
+      "breakpoints": true
     }
   ]
 }

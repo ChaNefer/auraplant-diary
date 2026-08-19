@@ -4,6 +4,7 @@ import { EventInputSchema } from "@monodiary/timeline-core";
 import { db } from "../db/client.js";
 import { entity, event } from "../db/schema.js";
 import { badRequest, zodError } from "../lib/errors.js";
+import { identityUserId, workspaceOwnedBy } from "../lib/owner.js";
 import { applyTriage } from "../triage/engine.js";
 
 export const eventsRoutes = new Hono();
@@ -16,6 +17,9 @@ eventsRoutes.post("/", async (c) => {
     where: eq(entity.id, parsed.data.entity_id),
   });
   if (!ent) return badRequest(c, "entity_not_found");
+  if (!(await workspaceOwnedBy(ent.workspaceId, identityUserId(c)))) {
+    return c.json({ error: "forbidden" }, 403);
+  }
 
   const flags = applyTriage(
     parsed.data.type,

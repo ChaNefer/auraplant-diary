@@ -7,15 +7,21 @@ import {
 } from "@monodiary/timeline-core";
 import { db } from "../db/client.js";
 import { entity, entityWorkspaceMove, event, workspace } from "../db/schema.js";
+import { identityUserId, ownedWorkspaceIds, workspaceOwnedBy } from "../lib/owner.js";
 import { badRequest, notFound, zodError } from "../lib/errors.js";
 
 export const entitiesRoutes = new Hono();
 
 entitiesRoutes.get("/", async (c) => {
+  const userId = identityUserId(c);
   const rows = await db.query.entity.findMany({
     orderBy: [asc(entity.createdAt)],
   });
-  return c.json(rows.map(serializeEntity));
+  if (!userId) return c.json(rows.map(serializeEntity));
+  const allowed = await ownedWorkspaceIds(userId);
+  return c.json(
+    rows.filter((r) => allowed.has(r.workspaceId)).map(serializeEntity),
+  );
 });
 
 entitiesRoutes.post("/", async (c) => {
@@ -26,6 +32,9 @@ entitiesRoutes.post("/", async (c) => {
     where: eq(workspace.id, parsed.data.workspace_id),
   });
   if (!ws) return badRequest(c, "workspace_not_found");
+  if (!(await workspaceOwnedBy(ws.id, identityUserId(c)))) {
+    return c.json({ error: "forbidden" }, 403);
+  }
 
   const [row] = await db
     .insert(entity)
@@ -45,6 +54,9 @@ entitiesRoutes.get("/:id", async (c) => {
     where: eq(entity.id, id),
   });
   if (!row) return notFound(c, "entity_not_found");
+  if (!(await workspaceOwnedBy(row.workspaceId, identityUserId(c)))) {
+    return notFound(c, "entity_not_found");
+  }
   return c.json(serializeEntity(row));
 });
 
@@ -57,11 +69,17 @@ entitiesRoutes.post("/:id/transfer", async (c) => {
     where: eq(entity.id, id),
   });
   if (!existing) return notFound(c, "entity_not_found");
+  if (!(await workspaceOwnedBy(existing.workspaceId, identityUserId(c)))) {
+    return notFound(c, "entity_not_found");
+  }
 
   const target = await db.query.workspace.findFirst({
     where: eq(workspace.id, parsed.data.to_workspace_id),
   });
   if (!target) return badRequest(c, "to_workspace_not_found");
+  if (!(await workspaceOwnedBy(target.id, identityUserId(c)))) {
+    return c.json({ error: "forbidden" }, 403);
+  }
 
   if (existing.workspaceId === parsed.data.to_workspace_id) {
     return badRequest(c, "already_in_workspace");
@@ -106,6 +124,9 @@ entitiesRoutes.get("/:id/timeline", async (c) => {
     where: eq(entity.id, id),
   });
   if (!existing) return notFound(c, "entity_not_found");
+  if (!(await workspaceOwnedBy(existing.workspaceId, identityUserId(c)))) {
+    return notFound(c, "entity_not_found");
+  }
 
   const query = TimelineQuerySchema.safeParse({
     from: c.req.query("from"),
