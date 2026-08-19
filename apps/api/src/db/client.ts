@@ -3,13 +3,15 @@ import "dotenv/config";
 import { PGlite } from "@electric-sql/pglite";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema.js";
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
+const configuredUrl = process.env.DATABASE_URL;
+if (!configuredUrl) {
   throw new Error("DATABASE_URL is required");
 }
+const databaseUrl: string = configuredUrl;
 
 function needsPgSsl(url: string) {
   return (
@@ -21,9 +23,7 @@ function needsPgSsl(url: string) {
 const usePglite =
   databaseUrl === "pglite" || databaseUrl.startsWith("pglite:");
 
-type AppDb =
-  | ReturnType<typeof drizzlePglite>
-  | ReturnType<typeof drizzlePg>;
+type AppDb = PostgresJsDatabase<typeof schema>;
 
 function pglitePath() {
   if (databaseUrl === "pglite") return "./.data/monodiary";
@@ -37,7 +37,7 @@ if (usePglite) {
   const dir = pglitePath();
   mkdirSync(dir, { recursive: true });
   const client = new PGlite(dir);
-  db = drizzlePglite({ client, schema });
+  db = drizzlePglite({ client, schema }) as unknown as AppDb;
   sql = { end: async () => undefined };
   console.log(`DB ready (PGlite): ${dir}`);
 } else {
