@@ -3,8 +3,8 @@ services:
     name: auraplant-diary
     runtime: node
     plan: starter
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile --filter @monodiary/api... --prod=false && pnpm --filter @monodiary/timeline-core build && pnpm --filter @monodiary/api build
-    startCommand: node apps/api/dist/db/migrate.js && node apps/api/dist/index.js
+    buildCommand: bash scripts/render-build.sh
+    startCommand: bash scripts/render-start.sh
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
